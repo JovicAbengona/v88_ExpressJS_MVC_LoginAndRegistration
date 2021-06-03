@@ -7,10 +7,17 @@ module.exports = {
     },
     register: async (request, response) => {
         const errors = validationResult(request);
-        let messages = [];
+        const [getEmail] = await User.checkEmail(request.body.email);
+        let messages = [{ "type": "error", "msg": [] }];
+        
+        if(getEmail.length > 0){
+            messages[0]["msg"].push({
+                "element": "email",
+                "message": "This email is already registered"
+            });
+        }
         
         if(!errors.isEmpty() || request.body.password != request.body.confirm_password){
-            messages.push({ "type": "error", "msg": [] });
             errors.array().forEach(value => {
                 messages[0]["msg"].push({
                     "element": value.param,
@@ -21,7 +28,7 @@ module.exports = {
                 messages[0]["msg"].push({
                     "element": "confirm_password",
                     "message": "Passwords doesn't match"
-                })
+                });
             }
 
             const alert = messages;

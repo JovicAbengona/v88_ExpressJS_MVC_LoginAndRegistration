@@ -9,4 +9,8 @@ module.exports = class User{
         return db.execute(`INSERT INTO users (email, first_name, last_name, password, created_at, updated_at) 
                             VALUES (?, ?, ?, MD5(?), NOW(), NOW())`, [email, first_name, last_name, password]);
     }
+
+    static checkEmail(email){
+        return db.execute(`SELECT email FROM users WHERE email = ?`, [email]);
+    }
 }
