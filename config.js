@@ -1,5 +1,4 @@
 // Database Configuration
-
 const MySQL = require("mysql2");
 const Config = require("./config.json");
 const Connection = MySQL.createConnection({
@@ -9,6 +8,5 @@ const Connection = MySQL.createConnection({
     "database": Config.database,
     "port": Config.port
 });
-
 
 module.exports = Connection.promise();
